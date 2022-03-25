@@ -1,0 +1,12 @@
+## `gsub!(str, "")` → `remove_matches(str)`
+```ruby:Ruby
+s = "foo_bar"
+s.gsub!("bar", "")
+s # => "foo_"
+```
+```rust:Rust (nightly)
+let mut s = String::from("foo_bar");
+s.remove_matches("bar");
+s // => "foo_"
+```
+[DOC](https://doc.rust-lang.org/std/string/struct.String.html#method.remove_matches) [実行](https://play.rust-lang.org/?code=%23%21%5Bfeature%28string_remove_matches%29%5D%0A%0Afn+main%28%29+%7B%0A++++let+mut+s+%3D+String%3A%3Afrom%28%22foo_bar%22%29%3B%0A++++s.remove_matches%28%22bar%22%29%3B%0A++++println%21%28%22%7B%3A%3F%7D%22%2C+s%29%3B%0A%7D%0A&version=nightly&edition=2021)
