@@ -1,9 +1,9 @@
 ---
 title: "【Ruby脳向け】Rustの配列系メソッド対応"
-emoji: "🤖"
+emoji: "🐱"
 type: "tech" # tech: 技術記事 / idea: アイデア
-topics: ["Rust", "Ruby", "Array", "Vec", "イテレーター"]
-published: false
+topics: ["Rust", "Ruby", "Array", "Vec"]
+published: true
 ---
 
 ## `length` → `len`
