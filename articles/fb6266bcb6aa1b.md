@@ -2,7 +2,7 @@
 title: "【Ruby脳向け】Rustの配列系メソッド対応"
 emoji: "🐱"
 type: "tech" # tech: 技術記事 / idea: アイデア
-topics: ["Rust", "Ruby", "Array", "Vec"]
+topics: ["Rust", "Ruby", "Array", "Vec", "itertools"]
 published: true
 ---
 
