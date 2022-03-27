@@ -8,9 +8,9 @@ published: true
 
 ## 概要
 
-標準クレートの Path のメソッドを一通り使ってみて、かなり気が利く作りになっていることはわかった。が、 Ruby の expand_path に相当する `~/` の展開をやってくれないのが気になったので調べてみる。
+標準クレートの Path を一通り使ってみて、かなり気が利く作りになっていることはわかった。が、 Ruby の expand_path に相当する `~/` の展開をやってくれないのが気になったので調べてみる。
 
-## 標準で対応していたのに？
+## 標準で対応していた？
 
 そこで調べてみると `home_dir` でホームディレクトリを取得できた。
 
@@ -27,7 +27,7 @@ warning: use of deprecated function `std::env::home_dir`: This function's behavi
 
 ## 外部クレートを探す
 
-そこで外部クレートと探してみると `home-dir` というのを見つけたので使ってみる。
+そこで外部クレートと探してみると `home-dir` というそれっぽいのを見つけたので使ってみる。
 
 ```rust
 use std::path::Path;
@@ -40,7 +40,7 @@ Path::new("~/src").expand_home() // => Ok("/Users/alice/src")
 
 ## どういう実装？
 
-実装方法を覗いてみるとこうなっていた。
+覗いてみるとこうなっていた。
 
 まず環境変数 HOME を見る。
 
@@ -62,5 +62,5 @@ User::from_uid(uid).unwrap().unwrap().dir // => "/Users/alice"
 ## ちょっとはまったこと
 
 `home_dir` が `nix` に依存しているからといって `home_dir` を使うプログラムから `use nix` とはできないようだ。
-Ruby (bundler) や JavaScript (npm) ではメインのプログラムが依存しているライブラリが依存しているライブラリをついでに使うことができたので戸惑ってしまった。
+Ruby (bundler) や JavaScript (npm) ではメインのプログラムが依存しているライブラリが依存しているライブラリをどこからでもついでに使うことができたので戸惑ってしまった。
 Rust の仕様の方がスコープが明確で良い。
