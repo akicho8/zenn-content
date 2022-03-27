@@ -12,7 +12,7 @@ published: true
 
 ## 標準で対応していた？
 
-そこで調べてみると `home_dir` でホームディレクトリを取得できた。
+ホームディレクトリ自体は `home_dir` で取得できた。
 
 ```rust
 std::env::home_dir() // => Some("/Users/alice")
