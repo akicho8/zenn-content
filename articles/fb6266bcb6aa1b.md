@@ -2,7 +2,7 @@
 title: "【Ruby脳向け】Rustの配列系メソッド対応"
 emoji: "🐱"
 type: "tech" # tech: 技術記事 / idea: アイデア
-topics: ["Rust", "Ruby", "Array", "Vec"]
+topics: ["Rust", "Ruby", "Array", "Vec", "Itertools"]
 published: true
 ---
 
@@ -281,7 +281,9 @@ v.get(1)      // => Some(6)
 v.get(1..=2)  // => Some([6, 7])
 v[1]          // => 6
 ```
-何かやるとすぐ元を破壊しようとするメソッドが多いなかで get は安全かつ範囲も使えるので便利。ただしマイナスを指定しても末尾からとはならない。整数でアクセスするときだけ get(i) を [i] にすれば Option 型にならない。
+- 何かやるとすぐ元を破壊しようとするメソッドが多いなかで get は安全かつ範囲も使えるので便利
+- ただしマイナスを指定しても末尾からとはならない
+- 整数でアクセスするときだけ get(i) を [i] にすれば Option 型にならない
  
 ## `a, b = ary` → `next_tuple`
 ```ruby:Ruby
@@ -299,7 +301,9 @@ if let Some((a, b)) = [5, 6, 7, 8].iter().next_tuple() {
 [5, 6, 7, 8].get(..3)                         // => Some([5, 6, 7])
 [5, 6, 7, 8].iter().next_tuple::<(_, _, _)>() // => Some((5, 6, 7))
 ```
-get(..n) に似ているが、取り出される数は受け側のタプルの要素数で決まる。繰り返さない。取り出しておわり。
+- get(..n) に似ているが、取り出される数は受け側のタプルの要素数で決まる
+- 繰り返さない
+- 取り出しておわり
  
 ## `a, b = ary 厳しい版` → `collect_tuple`
 ```ruby:Ruby
@@ -316,7 +320,8 @@ use itertools::Itertools;
 [5, 6].iter().collect_tuple::<(_, _)>()    // => Some((5, 6))
 [5, 6, 7].iter().collect_tuple::<(_, _)>() // => None
 ```
-タプルの要素数と配列の要素数が同じときだけ取り出せる。メソッド名からこの挙動は想像つかなかった。
+- タプルの要素数と配列の要素数が同じときだけ取り出せる
+- メソッド名からこの挙動は想像つかなかった
  
 ## `first` → `first`
 ```ruby:Ruby
@@ -333,7 +338,6 @@ use itertools::Itertools;
 ```rust:Rust
 [5, 6, 7].get(..2)  // => Some([5, 6])
 ```
-
  
 ## `take(n)` → `get(..n)`
 ```ruby:Ruby
@@ -342,7 +346,6 @@ use itertools::Itertools;
 ```rust:Rust
 [5, 6, 7, 8, 9].get(..2) // => Some([5, 6])
 ```
-
  
 ## `take(n)` → `iter.take(n)`
 ```ruby:Ruby
@@ -394,7 +397,8 @@ use itertools::Itertools;
 let v = vec![5, 6, 7];
 v.get((v.len() - 2)..)   // => Some([6, 7])
 ```
-専用メソッドがありそうだが見つからなかった。引数は `v.len() - 2..` と書いてもいいけど読み間違いそう。
+- 専用メソッドがありそうだが見つからなかった
+- 引数は `v.len() - 2..` と書いてもいいけど読み間違いそう
  
 ## `clear` → `clear`
 ```ruby:Ruby
@@ -423,7 +427,6 @@ Vec::<isize>::new().is_empty() // => true
 ```rust:Rust
 vec![5, 6, 7, 8, 9].get(2..)  // => Some([7, 8, 9])
 ```
-
  
 ## `drop(n)` → `iter.dropping`
 ```ruby:Ruby
@@ -447,7 +450,8 @@ let r = v.split_off(2);
 r  // => [7, 8, 9]
 v  // => [5, 6]
 ```
-メソッド名がイケてない。off が何の略なのかは不明。offset ？
+- メソッド名がイケてない
+- off が何の略なのかは不明
  
 ## `drop(n)` → `iter.skip(n)`
 ```ruby:Ruby
@@ -508,7 +512,8 @@ a.append(&mut b);
 a  // => [5, 6, 7, 8]
 b  // => []
 ```
-push の別名ではない。中身が**移動する**ので注意しよう。
+- push の別名ではない
+- 中身が**移動する**ので注意しよう
  
 ## `pop` → `pop`
 ```ruby:Ruby
@@ -590,7 +595,9 @@ v  // => [7, 5, 6]
 ```rust:Rust
 [5, 6, 7].iter().rev().collect::<Vec<_>>() // => [7, 6, 5]
 ```
-Vec 自体に reverse があるけど破壊してしまう。iter 経由の rev は破壊しない。名前は合わせてほしかった。
+- Vec 自体に reverse があるけど破壊してしまう
+- iter 経由の rev は破壊しない
+- 名前は合わせてほしかった
  
 ## `reverse!` → `reverse`
 ```ruby:Ruby
@@ -644,7 +651,8 @@ end
 use itertools::Itertools;
 (100..=102).pad_using(6, |i| i * 2).collect::<Vec<_>>() // => [100, 101, 102, 6, 8, 10]
 ```
-配列に適用したかったが方法がわからなかった。Range的なのにしか適用できないのかもしれない。
+- 配列に適用したかったが方法がわからなかった
+- Range的なのにしか適用できないのかもしれない
  
 ## `v * n` → `v.repeat(n)`
 ```ruby:Ruby
@@ -686,7 +694,9 @@ let mut v = vec![5, 6, 7, 8];
 v.swap_remove(1)  // => 6
 v                 // => [5, 8, 7]
 ```
-指定の位置に最後の要素を持ってくる。詰める処理を省けるので O(1) で消せる。順序を気にしないとき用。
+- 指定の位置に最後の要素を持ってくる
+- 詰める処理を省けるので O(1) で消せる
+- 順序を気にしないとき用
  
 ## `insert` → `insert`
 ```ruby:Ruby
@@ -709,9 +719,8 @@ v  // => [5, 6, 7]
 [5, 6].iter().map(|e| e * 10).collect::<Vec<_>>() // => [50, 60]
 [5, 6].iter().map(|e| e * 10)                     // => Map { iter: Iter([5, 6]) }
 ```
-元を破壊しないので使いやすい。
-他の iter 経由のメソッドもだけど繰り返し処理は collect() などが呼ばれるまで評価されないので正確には lazy.map の方が似ている(たぶん)。
-
+- 元を破壊しないので使いやすい
+- 他の iter 経由のメソッドもだけど繰り返し処理は collect() などが呼ばれるまで評価されないので正確には lazy.map の方が似ている(たぶん)
  
 ## `flat_map` → `iter.flat_map`
 ```ruby:Ruby
@@ -753,7 +762,8 @@ let it = [2, 3].iter().scan(10, |a, &e| {
 });
 it.collect::<Vec<_>>() // => [12, 15]
 ```
-書き方は inject に似ているけど map のように配列を返す。each_with_object の代用としても使えそう。
+- 書き方は inject に似ているけど map のように配列を返す
+- each_with_object の代用としても使えそう
  
 ## `find_all` → `iter.filter`
 ```ruby:Ruby
@@ -791,7 +801,8 @@ r.collect::<Vec<_>>() // => [60, 80]
 // 混乱しにくい書き方
 [5, 6, 7, 8].iter().filter(|&e| e % 2 == 0).map(|e| e * 10).collect::<Vec<_>>() // => [60, 80]
 ```
-2つのことを同時に行うメソッドは混乱してしまう。よっぽのどのことがなければ filter + map を使おう。
+- 2つのことを同時に行うメソッドは混乱してしまう
+- よっぽのどのことがなければ filter + map を使おう
  
 ## `take_while + collect` → `iter.map_while`
 ```ruby:Ruby
@@ -810,7 +821,8 @@ it.collect::<Vec<_>>() // => [60, 60]
 // 混乱しにくい書き方
 [6, 6, 7, 6].iter().take_while(|&e| e % 2 == 0).map(|e| e * 10).collect::<Vec<_>>() // => [60, 60]
 ```
-filter_map の先頭から続く有効なものだけ版。take_while + map の方がわかりやすい。
+- filter_map の先頭から続く有効なものだけ版
+- take_while + map の方がわかりやすい
  
 ## `find して何か` → `iter.find_map`
 ```ruby:Ruby
@@ -831,7 +843,8 @@ if let Some(v) = [5, 6, 7, 8].iter().find(|&e| e % 2 == 0) {
     v * 10 // => 60
 }
 ```
-map とあるせいで繰り返しを想像してしまうがただの find と考えた方がよい。また、よっぽどのことがなければ find した後で何かした方がわかりやすい。
+- map とあるせいで繰り返しを想像してしまうがただの find と考えた方がよい
+- また、よっぽどのことがなければ find した後で何かした方がわかりやすい
  
 ## `select!` → `retain`
 ```ruby:Ruby
@@ -1241,7 +1254,7 @@ Itertools を使うと簡潔に書けるようだ
 // >> 6
 // >> 7
 ```
-`for` は先後が逆になって混乱するので `for_each` を使いたい。
+`for` は先後が逆になって混乱するので `for_each` を使いたい
  
 ## `each { break }` → `iter.try_for_each`
 ```ruby:Ruby
@@ -1263,7 +1276,8 @@ let r = [5, 6, 7].iter().try_for_each(|&e| {
 });
 r // => Break(60)
 ```
-for_each で break できる版。ただ Continue を毎回呼ばないといけないのが奇妙ではある。
+- for_each で break できる版
+- Continue を毎回呼ばないといけないのが奇妙ではある
  
 ## `with_index` → `iter.enumerate`
 ```ruby:Ruby
@@ -1272,7 +1286,9 @@ for_each で break できる版。ただ Continue を毎回呼ばないといけ
 ```rust:Rust
 ["a", "b"].iter().enumerate().collect::<Vec<_>>() // => [(0, "a"), (1, "b")]
 ```
-Enumerable 的なものを連想してしまう。用語がぜんぜん違うので注意しよう。index の位置が逆なのも注意しよう。
+- Enumerable 的なものを連想してしまう
+- 用語がぜんぜん違うので注意しよう
+- index の位置が逆なのも注意しよう
  
 ## `with_index の抽象化` → `iter.with_position`
 ```ruby:Ruby
@@ -1534,7 +1550,8 @@ use itertools::Itertools;
 ```rust:Rust (nightly)
 [5, 6, 6, 5].group_by(|a, b| a == b).collect::<Vec<_>>()  // => [[5], [6, 6], [5]]
 ```
-メソッド名がイケてない。全体を見てグループ化してないのでせめて slice_group_by としてほしかった。
+- メソッド名がイケてない
+- 全体を見てグループ化してないのでせめて slice_group_by としてほしかった
  
 ## `partition` → `iter.partition`
 ```ruby:Ruby
@@ -1565,8 +1582,10 @@ let (even, odd): (Vec<_>, Vec<_>) = [5, 6, 7, 8].iter().partition_map(|&e| {
 even  // => [6, 8]
 odd   // => [10, 14]
 ```
-true か false で分けるのではなく `Either::{Left, Right}` で値をラップして返す。言い変えると分けたあとで値を操作するのではなく分けながら値を操作する。わかりにくいのでよっぽどのことがなければ別々に書いた方がよさそう。
-どうやらこれは partition_result の内部実装を汎用化したもので、ほぼ partition_result のためにあると思われる。
+- true か false で分けるのではなく `Either::{Left, Right}` で値をラップして返す
+- 言い変えると分けたあとで値を操作するのではなく分けながら値を操作する
+- わかりにくいのでよっぽどのことがなければ別々に書いた方がよさそう
+- どうやらこれは partition_result の内部実装を汎用化したもので、ほぼ partition_result のためにあると思われる
  
 ## `?` → `iter.partition_result`
 ```rust:Rust
@@ -1590,7 +1609,8 @@ let (successes, failures): (Vec<_>, Vec<_>) = v.into_iter().partition_result();
 successes // => [5, 7]
 failures  // => [6, 8]
 ```
-Result 型要素の配列内容を Ok と Err に分ける。配列が要素に依存したメソッドを持っているのはいいのだろうか？
+- Result 型要素の配列内容を Ok と Err に分ける
+- 配列が要素に依存したメソッドを持っているのはいいのだろうか？
  
 ## `partition の破壊版` → `iter_mut.partition_in_place`
 ```rust:Rust (nightly)
@@ -1601,9 +1621,8 @@ ary    // => [8, 6, 7, 5, 9]
 ary[..index].iter().collect::<Vec<_>>() // => [8, 6]
 ary[index..].iter().collect::<Vec<_>>() // => [7, 5, 9]
 ```
-これだけ特殊で元を破壊するので iter でははなく **iter_mut** を使わないといけない。
-ドキュメントの「個数を返す」はピンとこないので「境界のインデックスを返す」と考えた方がよさそう。
-
+- これだけ特殊で元を破壊するので iter でははなく **iter_mut** を使わないといけない
+- ドキュメントの「個数を返す」はピンとこないので「境界のインデックスを返す」と考えた方がよさそう
  
 ## `?` → `iter.is_partitioned`
 ```rust:Rust (nightly)
@@ -1760,7 +1779,8 @@ let mut v: &[_] = &[5, 6, 7, 8, 9];
 v.take(2..)  // => Some([7, 8, 9])
 v            // => [5, 6]
 ```
-破壊しないでほしいときは get を使おう。引数は範囲の片方しか指定しちゃいけない型なので 1..=2 とか書くとエラーになってしまう。
+- 破壊しないでほしいときは get を使おう
+- 引数は範囲の片方しか指定しちゃいけない型なので 1..=2 とか書くとエラーになってしまう
  
 ## `to_a` → `to_vec`
 ```ruby:Ruby
@@ -1786,7 +1806,9 @@ v.to_vec()  // => [5, 6, 7]
 use itertools::Itertools;
 [5, 6, 7].iter().join("-")  // => "5-6-7"
 ```
-文字列の配列は join できる。しかし数値の配列は join できない。でも Itertools を入れると iter 経由で join できる。
+- 文字列の配列は join できる
+- しかし数値の配列は join できない
+- でも Itertools を入れると iter 経由で join できる
  
 ## `collect.join` → `iter.format_with`
 ```ruby:Ruby
@@ -1796,7 +1818,8 @@ use itertools::Itertools;
 use itertools::Itertools;
 format!("{}", [1.5, 1.5].iter().format_with("-", |e, f| f(&format_args!("({:.0})", e)))) // => "(2)-(2)"
 ```
-format_with のときにはまだ文字列になっていない。format! を通したとき文字列になるっぽい。
+- format_with のときにはまだ文字列になっていない
+- format! を通したとき文字列になるっぽい
  
 ## `collect.join の簡易版` → `iter.format`
 ```ruby:Ruby
@@ -1872,7 +1895,8 @@ let mut v = vec![7, 6, 5];
 v.sort();
 v  // => [5, 6, 7]
 ```
-同じ値は並び変えないらしい。そこにこだわりがなければ sort_unstable の方を使おう。
+- 同じ値は並び変えないらしい
+- そこにこだわりがなければ sort_unstable の方を使おう
  
 ## `sort {}` → `iter.sorted_by`
 ```ruby:Ruby
@@ -1915,7 +1939,8 @@ v.sort_by_key(|e| { c += 1; e.abs() });
 v  // => [5, -6, 7]
 c  // => 6
 ```
-値を参照するたびにクロージャが呼ばれるので注意しよう。sort_by_cached_key の方を使おう。
+- 値を参照するたびにクロージャが呼ばれるので注意しよう
+- sort_by_cached_key の方を使おう
  
 ## `sort_by` → `iter.sorted_by_cached_key`
 ```ruby:Ruby
@@ -1944,7 +1969,8 @@ let mut v = vec![7, 6, 5];
 v.sort_unstable();
 v  // => [5, 6, 7]
 ```
-sort_unstable 系は等しい要素も並び換えるけど sort より計算量が少ないらしい。等しい要素も並び換える点はRubyも同じはず。
+- sort_unstable 系は等しい要素も並び換えるけど sort より計算量が少ないらしい
+- 等しい要素も並び換える点はRubyも同じはず
  
 ## `sort! {}` → `sort_unstable_by`
 ```rust:Rust
@@ -1967,7 +1993,8 @@ c  // => 6
 ```rust:Rust
 [5, 7, 9].binary_search(&7)  // => Ok(1)
 ```
-発見できたインデックスを返す。ソート済み配列だけに使える contains の速い版と考えられる。
+- 発見できたインデックスを返す
+- ソート済み配列だけに使える contains の速い版と考えられる
  
 ## `bsearch_index` → `binary_search_by`
 ```ruby:Ruby
@@ -2044,7 +2071,8 @@ dedup        // => [5, 6, 7, 6, 5]
 duplicates   // => [5, 7, 5]
 v            // => [5, 6, 7, 6, 5, 5, 7, 5]
 ```
-他の dedup と同じだけど、ついでに連続した値たちも返す。破壊された元の値の並びは戻値のタプルの要素を結合したものになっているようだけどドキュメントに明記されていないので知らなくていいっぽい。
+- 他の dedup と同じだけど、ついでに連続した値たちも返す
+- 破壊された元の値の並びは戻値のタプルの要素を結合したものになっているようだけどドキュメントに明記されていないので知らなくていいっぽい
  
 ## `upcase! の類似` → `make_ascii_uppercase`
 ```ruby:Ruby
@@ -2132,13 +2160,15 @@ Some でラップしてある
 ```rust:Rust (nightly)
 ["a", "b", "c"].iter().intersperse(&"-").collect::<Vec<_>>() // => ["a", "-", "b", "-", "c"]
 ```
-セパレータは毎回固定で良いとき用。Itertools にも同名のメソッドがある。
+- セパレータは毎回固定で良いとき用
+- Itertools にも同名のメソッドがある
  
 ## `join + each ???` → `iter.intersperse_with`
 ```rust:Rust (nightly)
 ["a", "b", "c"].iter().intersperse_with(||&"-").collect::<Vec<_>>() // => ["a", "-", "b", "-", "c"]
 ```
-intersperse のクロージャ版。Itertools にも同名のメソッドがある。
+- intersperse のクロージャ版
+- Itertools にも同名のメソッドがある
  
 ## `chain` → `iter.chain`
 ```ruby:Ruby
@@ -2278,14 +2308,15 @@ it.next()  // => Some(4)
 it.next()  // => None
 it.next()  // => None
 ```
-fuse を呼んだ後、最初の None が来てから None を継続する。どういうときに使うのかはわからない。
+- fuse を呼んだ後、最初の None が来てから None を継続する
+- どういうときに使うのかはわからない
  
 ## `?` → `it.size_hint`
 ```rust:Rust
 let it = ["a", "b", "c"].iter();
 it.size_hint() // => (3, Some(3))
 ```
-イテレータの残りの長さの境界(下限と上限)を返す。ってどゆこと？
+イテレータの残りの長さの境界(下限と上限)を返すってどゆこと？
  
 ## `?` → `iter.eq`
 ```rust:Rust
@@ -2323,7 +2354,7 @@ v == v.sort # => true
 ```rust:Rust (nightly)
 [5, 6, 7].is_sorted()  // => true
 ```
-ソートしてあるか調べるぐらいならソートすればよくね？ って思うけど、利用する側でソート済みならソートを省略するように書けばトータルで計算量を減らせたりする場合があってそれを考慮して用意されているメソッドだろうか。
+ソートしてあるか調べるぐらいならソートすればよくね？ って思うけど、利用する側でソート済みならソートを省略するように書けばトータルで計算量を減らせたりする場合があってそれを考慮して用意されているメソッドだろうか
  
 ## `?` → `is_sorted_by`
 ```rust:Rust (nightly)
@@ -2353,7 +2384,6 @@ v == v.sort_by(&:abs) # => true
 ```rust:Rust (nightly)
 [5_isize, -6, 7].iter().is_sorted_by_key(|e| e.abs()) // => true
 ```
-
  
 ## `?` → `select_nth_unstable`
 ```rust:Rust
@@ -2361,7 +2391,9 @@ let mut v = vec![7, 6, 5];
 v.select_nth_unstable(0); // [0] が 5 になることだけは保証する
 v  // => [5, 6, 7]
 ```
-指定の位置の値だけはソート後と同じにする。ソート処理の一部分だけを切り出したような機能。いざ必要になったときこのメソッドのことを忘れている自信はある。
+- 指定の位置の値だけはソート後と同じにする
+- ソート処理の一部分だけを切り出したような機能
+- いざ必要になったときこのメソッドのことを忘れている自信はある
  
 ## `?` → `select_nth_unstable_by`
 ```rust:Rust
@@ -2396,3 +2428,4 @@ a.collect::<Vec<_>>()  // => [5, 6, 7]
 b.collect::<Vec<_>>()  // => [5, 6, 7]
 ```
 使いどころがわからないメソッド
+ 
