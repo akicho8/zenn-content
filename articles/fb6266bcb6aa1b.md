@@ -224,7 +224,7 @@ use itertools::Itertools;
 ```
 ```rust:Rust
 use itertools::Itertools;
-[5, 5, 6].iter().counts_by(|e| e * 2)  // => {12: 1, 10: 2}
+[5, 5, 6].iter().counts_by(|e| e * 2)  // => {10: 2, 12: 1}
 ```
  
 ## `uniq.size <= 1` → `iter.all_equal`
