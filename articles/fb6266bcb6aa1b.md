@@ -6,6 +6,191 @@ topics: ["Rust", "Ruby", "Array", "Vec"]
 published: true
 ---
 
+| Ruby                              | Rust                        |
+|-----------------------------------|-----------------------------|
+| length                            | len                         |
+| count                             | iter.count                  |
+| tally                             | iter.counts                 |
+| map.tally                         | iter.counts_by              |
+| uniq.size \<= 1                   | iter.all_equal              |
+| v == v.uniq                       | iter.all_unique             |
+| transpose                         | iter.multiunzip             |
+| include?                          | contains                    |
+| slice                             | get                         |
+| a, b = ary                        | next_tuple                  |
+| a, b = ary 厳しい版               | collect_tuple               |
+| first                             | first                       |
+| first(n)                          | get(..n)                    |
+| take(n)                           | get(..n)                    |
+| take(n)                           | iter.take(n)                |
+| [...-n]                           | iter.dropping_back(n)       |
+| take_while                        | iter.take_while             |
+| last                              | last                        |
+| last                              | iter.last                   |
+| last(n)                           | v.get((v.len() - n)..)      |
+| clear                             | clear                       |
+| empty?                            | is_empty                    |
+| drop(n)                           | get(n..)                    |
+| drop(n)                           | iter.dropping               |
+| drop(n) の破壊版                  | split_off(n)                |
+| drop(n)                           | iter.skip(n)                |
+| drop_while                        | iter.skip_while             |
+| [v.take(n), v.drop(n)]            | split_at(n)                 |
+| push                              | push                        |
+| a.concat(b.slice!(0..))           | append                      |
+| pop                               | pop                         |
+| shift                             | take_first                  |
+| pop                               | take_last                   |
+| unshift(v)                        | insert(0, v)                |
+| rotate!(n)                        | rotate_left(n)              |
+| rotate!(-n)                       | rotate_right(n)             |
+| reverse                           | iter.rev                    |
+| reverse!                          | reverse                     |
+| fill                              | fill                        |
+| fill {}                           | fill_with                   |
+| fill に類似                       | pad_using                   |
+| v * n                             | v.repeat(n)                 |
+| delete_at                         | remove                      |
+| v[i] = v.pop                      | swap_remove(i)              |
+| insert                            | insert                      |
+| map                               | iter.map                    |
+| flat_map                          | iter.flat_map               |
+| ?                                 | update                      |
+| map(&:to_f)                       | iter.map_into::\<f64\>()    |
+| map の何か渡せる版                | iter.scan                   |
+| find_all                          | iter.filter                 |
+| reject                            | iter.filter(\|\| !)         |
+| filter_map                        | iter.filter_map             |
+| take_while + collect              | iter.map_while              |
+| find して何か                     | iter.find_map               |
+| select!                           | retain                      |
+| reject!                           | retain(\|\| !)              |
+| select! しつつ要素も更新          | retain_mut                  |
+| uniq                              | iter.unique                 |
+| uniq {}                           | iter.unique_by              |
+| all?                              | iter.all                    |
+| any?                              | iter.any                    |
+| one? && first                     | iter.at_most_one            |
+| find                              | iter.find                   |
+| find \|\| first                   | iter.find_or_first          |
+| find \|\| last                    | iter.find_or_last           |
+| index {}                          | iter.position               |
+| rindex {}                         | iter.rposition              |
+| ?                                 | iter.find_position          |
+| inject(acc) {}                    | iter.fold                   |
+| inject(acc) { break }             | iter.try_fold               |
+| inject {}                         | iter.reduce                 |
+| inject { break }                  | iter.try_reduce             |
+| sum                               | iter.sum                    |
+| inject(:+)                        | ter.sum1                    |
+| inject(1, :*)                     | iter.product                |
+| inject(:*)                        | ter.product1                |
+| max                               | iter.max                    |
+| max_by                            | iter.max_by_key             |
+| max {}                            | iter.max_by                 |
+| index(max)                        | iter.position_max           |
+| min                               | iter.min                    |
+| min_by                            | iter.min_by_key             |
+| min {}                            | iter.min_by                 |
+| index(min)                        | iter.position_min           |
+| minmax                            | iter.minmax                 |
+| ?                                 | iter.position_minmax        |
+| to_enum                           | iter                        |
+| entries                           | iter.collect                |
+| to_a                              | iter.collect_vec            |
+| each                              | iter.for_each               |
+| each { break }                    | iter.try_for_each           |
+| with_index                        | iter.enumerate              |
+| with_index の抽象化               | iter.with_position          |
+| tap { \|e\| e.each {} }           | iter.inspect                |
+| each_slice(n).collect(&:first)    | iter.step_by(n)             |
+| zip 余り除去                      | iter.zip                    |
+| zip 捨てない 詰める               | iter.interleave             |
+| zip 捨てない 詰める 富豪的        | iter.zip_longest            |
+| zip 次が無いと終わり              | iter.interleave_shortest    |
+| combination                       | iter.combinations           |
+| permutation                       | iter.permutations           |
+| combination の重ね掛け            | iter.powerset               |
+| each_cons(n)                      | windows(n)                  |
+| each_cons 個数で指定しない        | iter.tuple_windows          |
+| each_cons 一周する                | iter.circular_tuple_windows |
+| each_cons 余り除去                | iter.tuples                 |
+| chunk                             | group_by                    |
+| partition                         | iter.partition              |
+| partition + map                   | iter.partition_map          |
+| ?                                 | iter.partition_result       |
+| partition の破壊版                | iter_mut.partition_in_place |
+| ?                                 | iter.is_partitioned         |
+| each_slice                        | chunks                      |
+| each_slice の末尾から版           | rchunks                     |
+| chunk                             | split                       |
+| slice_after                       | split_inclusive             |
+| chunk の末尾から版                | rsplit                      |
+| split(?, n) の類似                | splitn(n, \|\|)             |
+| ?                                 | rsplitn                     |
+| start_with? の類似                | starts_with                 |
+| end_with? の類似                  | ends_with                   |
+| delete_prefix の類似              | strip_prefix                |
+| delete_suffix の類似              | strip_suffix                |
+| slice!(...n) or slice!(n...)      | take                        |
+| to_a                              | to_vec                      |
+| join(sep) で文字列化              | iter.join                   |
+| collect.join                      | iter.format_with            |
+| collect.join の簡易版             | iter.format                 |
+| join(sep)                         | join                        |
+| join                              | concat                      |
+| flatten(1)                        | concat                      |
+| flatten(1) 区切り値追加           | join                        |
+| flatten(1)                        | iter.flatten                |
+| sort                              | iter.sorted                 |
+| sort!                             | sort                        |
+| sort {}                           | iter.sorted_by              |
+| sort! {}                          | sort_by                     |
+| sort_by ブロック呼びすぎ          | iter.sorted_by_key          |
+| sort_by! ブロック呼びすぎ         | sort_by_key                 |
+| sort_by                           | iter.sorted_by_cached_key   |
+| sort_by!                          | sort_by_cached_key          |
+| sort!                             | sort_unstable               |
+| sort! {}                          | sort_unstable_by            |
+| ?                                 | sort_unstable_by_key        |
+| ?                                 | binary_search               |
+| bsearch_index                     | binary_search_by            |
+| ?                                 | binary_search_by_key        |
+| squeeze! の類似                   | dedup                       |
+| squeeze! の類似                   | dedup_by_key(\|e\|)         |
+| squeeze! の類似                   | dedup_by(\|a, b\|)          |
+| ?                                 | partition_dedup             |
+| upcase! の類似                    | make_ascii_uppercase        |
+| downcase! の類似                  | make_ascii_lowercase        |
+| all? { \|e\| (0..127).cover?(e) } | is_ascii                    |
+| sort.take(n)                      | iter.k_smallest(n)          |
+| \<=\>                             | iter.cmp                    |
+| ?                                 | iter.cmp_by                 |
+| \<=\>                             | partial_cmp                 |
+| ?                                 | iter.partial_cmp_by         |
+| join + each ???                   | iter.intersperse            |
+| join + each ???                   | iter.intersperse_with       |
+| chain                             | iter.chain                  |
+| it.next                           | it.next                     |
+| it.peek                           | it.peek                     |
+| ?                                 | it.nth                      |
+| n.times { it.next }               | it.advance_by(n)            |
+| ?                                 | it.fuse                     |
+| ?                                 | it.size_hint                |
+| ?                                 | iter.eq                     |
+| ?                                 | iter.eq_by                  |
+| ?                                 | iter.is_sorted              |
+| ?                                 | is_sorted                   |
+| ?                                 | is_sorted_by                |
+| ?                                 | is_sorted_by_key            |
+| ?                                 | iter.is_sorted_by           |
+| ?                                 | iter.is_sorted_by_key       |
+| ?                                 | select_nth_unstable         |
+| ?                                 | select_nth_unstable_by      |
+| ?                                 | select_nth_unstable_by_key  |
+| to_enum を2つ                     | iter.tee                    |
+
+
 ## `length` → `len`
 ```ruby:Ruby
 [5, 6].length  # => 2
@@ -2211,4 +2396,3 @@ a.collect::<Vec<_>>()  // => [5, 6, 7]
 b.collect::<Vec<_>>()  // => [5, 6, 7]
 ```
 使いどころがわからないメソッド
- 
