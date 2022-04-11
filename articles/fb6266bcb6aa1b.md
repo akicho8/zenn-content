@@ -2,7 +2,7 @@
 title: "【Ruby脳向け】Rustの配列系メソッド対応"
 emoji: "🐱"
 type: "tech" # tech: 技術記事 / idea: アイデア
-topics: ["Rust", "Ruby", "Array", "Vec", "itertools"]
+topics: ["Rust", "Ruby", "Array", "Vec"]
 published: true
 ---
 
@@ -30,7 +30,7 @@ v.len()  // => 2
 ```
 ```rust:Rust
 use itertools::Itertools;
-[5, 5, 6].iter().counts()  // => {6: 1, 5: 2}
+[5, 5, 6].iter().counts()  // => {5: 2, 6: 1}
 ```
  
 ## `map.tally` → `iter.counts_by`
