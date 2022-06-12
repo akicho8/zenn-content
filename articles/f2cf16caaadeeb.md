@@ -10,7 +10,7 @@ published: true
 *git commit すると即選択画面へ*
 
 ![](/images/f2cf16caaadeeb/emacs_ss2.png)
-*そこで doc ENTER するとこうなる*
+*そこで d ENTER するとこうなる*
 
 ## 手順1. yasnippet で展開できるようにしておく
 
@@ -46,3 +46,5 @@ published: true
 
 (add-hook 'git-commit-setup-hook 'my-git-commit-prefix-select)
 ```
+
+そんだけです
