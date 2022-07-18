@@ -1,5 +1,5 @@
 ---
-title: "Thorの知見メモ"
+title: "CLI用ライブラリThorの知見メモ"
 emoji: "🆑"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["thor", "Ruby"]
