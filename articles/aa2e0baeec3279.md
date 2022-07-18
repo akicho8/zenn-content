@@ -3,7 +3,7 @@ title: "Thorの知見メモ"
 emoji: "🆑"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["thor", "Ruby"]
-published: false
+published: true
 ---
 
 コマンドラインツールを作るときに便利な [Thor](https://github.com/rails/thor) を使って得た知見をまとめています
