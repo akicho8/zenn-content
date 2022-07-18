@@ -33,7 +33,7 @@ App.start(["func1", "--no-delete"])
 
   * options は悪しき HashWithIndifferentAccess のインスタンス
   * キーを文字列でもシンボルでもどちらでもアクセスできる
-  * しかし、そのメリットよりマージした際にキーが一致せずはまることの方が多い
+  * しかし、そのメリットよりマージした際にキーが一致せずはまるデメリットの方が多い
   * 結局は `options.transform_keys(&:to_sym)` としてから merge しないといけなかった
 
 # 定義したはずの say メソッドの様子がおかしい #
