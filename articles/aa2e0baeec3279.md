@@ -12,8 +12,8 @@ published: true
 
 ```ruby
 class App < Thor
-  method_option :delete, type: :boolean
   desc "func1", "(desc)"
+  method_option :delete, type: :boolean
   def func1
     options[:delete] # => false
 
@@ -31,10 +31,10 @@ App.start(["func1", "--no-delete"])
 # >> "全削除しました"
 ```
 
-  * options はキーを String で持っているので `options.transform_keys(&:to_sym)` としてから merge しないといけなかった
   * options は悪しき HashWithIndifferentAccess のインスタンス
   * キーを文字列でもシンボルでもどちらでもアクセスできる
   * しかし、そのメリットよりマージした際にキーが一致せずはまることの方が多い
+  * 結局は `options.transform_keys(&:to_sym)` としてから merge しないといけなかった
 
 # 定義したはずの say メソッドの様子がおかしい #
 
@@ -144,12 +144,12 @@ end
 App.start(["func1", "--foo"])
 ```
 
-  * func1 に入った直後で options 参照すれば良いのでは考えるかもしれない
+  * 上の例であれば func1 に入った直後で options を参照すればいい
   * しかしコマンドが100個がある場合、100箇所に同じコードを差し込まないといけない
   * このあたり何か用意してくれててもおかしくないがいくら調べてもわからなかった
   * とりあえず initialize の中で参照する方法にして問題はなかった
 
-# options 固有のメソッドを使ったら後で困った #
+# options 固有のメソッドを使ってたら後で困った #
 
 コマンド内で使える options (HashWithIndifferentAccess 型) が
 
@@ -214,7 +214,7 @@ end
 これは Rake タスクなどにも言えることで、エントリーポイントには完成されたメソッドを1行書くぐらいでないといけない
 可能だからといって同じスコープにプライベートメソッドをぶちまけてはいけない
 そこからおかしくなる
-Thor継承クラス自体を分けるべきという考え方もあるかもしれないが、クラスオプションは共有したかったし、サブコマンド扱いでもなかった
+Thor継承クラス自体を分けるべきという考え方もあるが、クラスオプションは共有したかったし、サブコマンド扱いでもなかった
 
 改善後
 
