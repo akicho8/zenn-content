@@ -8,7 +8,7 @@ published: true
 
 コマンドラインツールを作るときに便利な [Thor](https://github.com/rails/thor) を使って得た知見をまとめています
 
-# --no-delete としたら全削除された #
+# --no-delete としたら削除された #
 
 ```ruby
 class App < Thor
@@ -22,13 +22,13 @@ class App < Thor
     }.merge(options)
 
     if params[:delete]
-      p "全削除しました"
+      p "削除しました"
     end
   end
 end
 
 App.start(["func1", "--no-delete"])
-# >> "全削除しました"
+# >> "削除しました"
 ```
 
   * options は悪しき HashWithIndifferentAccess のインスタンス
