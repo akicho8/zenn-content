@@ -1,6 +1,6 @@
 ---
 title: "Rubyのコードで理解するRustのResultの振る舞い"
-emoji: "👏"
+emoji: "🍪"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: ["Rust", "Ruby", "Result"]
 published: true
